@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import styled from 'styled-components';
 import HomePage from './HomePage';
 import SignInPage from './SignInPage';
 import HabitsPage from './HabitsPage';
