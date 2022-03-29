@@ -1,16 +1,48 @@
-import {Link} from 'react-router-dom';
+import { useContext, useState } from 'react';
+import {Link, useNavigate} from 'react-router-dom';
+import axios from 'axios';
+import UserContext from '../Context/UserContext';
 import styled from 'styled-components';
 import logo from '../assets/trackit.png';
 
 function SignInPage(){
+    const { userData, setUserData } = useContext(UserContext);
+    const navigate = useNavigate();
+
+    function signInUser(event) {
+        event.preventDefault();
+
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up";
+        const object = {
+            email: userData.email,
+            name: userData.name,
+            image: userData.image,
+            password: userData.password
+        }
+
+        const promise = axios.post(URL,object);
+        
+        promise.then(response => {
+            const {data} = response;
+            console.log(data);
+            navigate("/");            
+        });
+
+        promise.catch((err) => {
+            console.log(err.response.statusText);
+            alert("Usuário não cadastrado. Por favor, tente novamente.");
+            setUserData({ email: '', name: '', image: '', password: '' });
+        });
+    }
+
     return (
         <Section>
             <img src={logo} />
-            <form>
-                <input type="email" placeholder="email" />
-                <input type="password" placeholder="senha" />
-                <input placeholder="nome" />
-                <input type="file" placeholder="foto" />
+            <form onSubmit={signInUser}>
+            <input type="email" value={userData.email} placeholder="email" onInput={e => setUserData({...userData, email: e.target.value})} />
+                <input value={userData.name} placeholder="nome" onInput={e => setUserData({...userData, name: e.target.value})}/>
+                <input type="text" value={userData.image} placeholder="foto" onInput={e => setUserData({...userData, image: e.target.value})} />
+                <input type="password" value={userData.password} placeholder="senha" onInput={e => setUserData({...userData, password: e.target.value})}/>
                 <button>Cadastrar</button>
             </form>
             <Link to={"/"}>
@@ -59,7 +91,7 @@ const Section = styled.div`
         color: #DBDBDB;
     }
 
-    input[type="file"]::-webkit-file-upload-button {
+    /* input[type="file"]::-webkit-file-upload-button {
         visibility: hidden;
     }  
 
@@ -69,7 +101,7 @@ const Section = styled.div`
 
     /* input[type="file"]::-webkit-input-placeholder {
         color: red;
-    } */
+    } */ 
 
     button {
         height: 45px;

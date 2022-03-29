@@ -1,11 +1,10 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import logo from '../assets/trackit.png';
 import styled from 'styled-components';
 
-function HomePage() {
+function LoginPage() {
 
-    // onInput={e => setInput2(e.target.value)}
     return (
         <Section>
             <img src={logo} />
@@ -21,7 +20,7 @@ function HomePage() {
     )
 }
 
-export default HomePage;
+export default LoginPage;
 
 
 const Section = styled.div`
