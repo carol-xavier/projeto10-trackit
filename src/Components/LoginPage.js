@@ -1,19 +1,23 @@
-import { useContext, useState } from 'react';
+import React,{ useContext, useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import TokenContext from '../Contexts/TokenContext';
 import logo from '../assets/trackit.png';
 import styled from 'styled-components';
+import {ThreeDots} from 'react-loader-spinner';
+
 
 function LoginPage() {
     const { token, setToken } = useContext(TokenContext);
     const [userLogin, setUserLogin] = useState({email:"", password:""});
+    const [load, setLoad] = useState(null);
 
     const navigate = useNavigate();
     
     function login(event) {
         event.preventDefault();
 
+        setLoad("load");
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login";
         const object = {
             email: userLogin.email,
@@ -31,17 +35,23 @@ function LoginPage() {
         promise.catch((err) => {
             console.log(err.response.statusText);
             alert("Falha no login. Tente novamente.");
+            setLoad("");
             setUserLogin({email:"", password:""});
         });
     }
+
 
     return (
         <Section>
             <img src={logo} />
             <form onSubmit={login}>
-                <input type="email" value={userLogin.email} placeholder="email" onInput={e => setUserLogin({...userLogin, email: e.target.value})} />
-                <input type="password" value={userLogin.password} placeholder="senha" onInput={e => setUserLogin({...userLogin, password: e.target.value})} />
-                <button>Entrar</button>
+                <input type="email" value={userLogin.email} placeholder="email" 
+                        onInput={e => setUserLogin({...userLogin, email: e.target.value})} />
+                <input type="password" value={userLogin.password} placeholder="senha" 
+                        onInput={e => setUserLogin({...userLogin, password: e.target.value})} />
+                <button>{load ? 
+                        <ThreeDots color="#FFFFFF" width="51px" height="13px" align="center" /> : <div>Entrar</div>}
+                </button>
             </form>
             <Link to={"/cadastro"}>
                 <p>Não tem uma conta? Cadastre-se!</p>
@@ -100,6 +110,10 @@ const Section = styled.div`
         font-family: 'Lexend Deca';
         font-weight: 400;
         font-size: 20.976px;
+
+        display:flex;
+        justify-content: center;
+        align-items: center;
     }
 
     p {
@@ -111,7 +125,6 @@ const Section = styled.div`
         color: #52B6FF;
     }
 `;
-
 
 
 

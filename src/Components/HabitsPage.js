@@ -21,7 +21,7 @@ export default HabitsPage;
 
 const Section = styled.div`
     background-color: #E5E5E5;
-    height: 100vh;
+    height: 80vh;
 `
 
 const Container = styled.div`
@@ -45,6 +45,4 @@ const Container = styled.div`
         background: #52B6FF;
         border-radius: 4.63636px;
     }
-
-
 `
