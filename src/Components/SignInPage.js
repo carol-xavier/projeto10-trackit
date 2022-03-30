@@ -9,7 +9,7 @@ import {ThreeDots} from 'react-loader-spinner';
 function SignInPage(){
     const { userData, setUserData } = useContext(UserContext);
     const [load, setLoad] = useState(false);
-    console.log(userData.image);
+  
     const navigate = useNavigate();
 
     function signInUser(event) {
@@ -28,7 +28,6 @@ function SignInPage(){
         
         promise.then(response => {
             const {data} = response;
-            console.log(data);
             navigate("/");            
         });
 
@@ -66,7 +65,8 @@ function SignInPage(){
 export default SignInPage;
 
 const Section = styled.div`
-    margin-top: 15%;
+    margin-top: 15vh;
+    background-color: #FFFFFF;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -77,13 +77,13 @@ const Section = styled.div`
     }
 
     form {
-        margin-top: 15%;
+        margin-top: 5vh;
         display: flex;
         flex-direction: column;
     } 
 
     input {
-        margin-bottom: 2%;
+        margin-bottom: 1vh;
         width: 303px;
         height: 45px;
         left: 36px;

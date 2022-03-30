@@ -30,7 +30,7 @@ const Headline = styled.div`
     justify-content: space-between;
 
     h1 {
-        margin-left: 3%;
+        margin-left: 5%;
         font-family: 'Playball';
         font-weight: 400;
         font-size: 38.982px;
@@ -38,6 +38,7 @@ const Headline = styled.div`
     }
 
     img {
+        margin-right: 7%;
         width: 51px;
         height: 51px;
         border-radius: 98.5px;

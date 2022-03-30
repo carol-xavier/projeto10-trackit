@@ -65,7 +65,7 @@ export default LoginPage;
 
 
 const Section = styled.div`
-    margin-top: 15%;
+    margin-top: 15vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -76,7 +76,7 @@ const Section = styled.div`
     }
 
     form {
-        margin-top: 15%;
+        margin-top: 15vh;
         display: flex;
         flex-direction: column;
     }

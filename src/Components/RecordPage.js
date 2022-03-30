@@ -17,11 +17,10 @@ function RecordPage() {
 export default RecordPage;
 
 const Container = styled.div`
-    background-color: #E5E5E5;
     height: 80vh;
     
     h1 {
-        margin-top: 70px;
+        margin-top: 90px;
         font-family: 'Lexend Deca';
         font-weight: 400;
         font-size: 22.976px;
