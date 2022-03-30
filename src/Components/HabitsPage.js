@@ -1,15 +1,58 @@
+import { useState, useEffect, useContext } from 'react';
+import TokenContext from '../Contexts/TokenContext';
+import axios from 'axios';
 import styled from 'styled-components';
+import Table from './Table';
 import Header from './Header';
 import Footer from './Footer';
 
 function HabitsPage() {
+    const { loginData } = useContext(TokenContext);
+
+    const [habitTable, setHabitTable] = useState(false);
+
+    const [newHabit, setNewHabit] = useState({ name: '', days: [] })
+
+    const [load, setLoad] = useState(false);
+
+    const [callUseEffect, setCallUseEffect] = useState(false);
+
+    useEffect(() => {
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${loginData.token}`
+            }
+        }
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
+
+        const promise = axios.get(URL, config);
+
+        promise.then((response) => {
+            const { data } = response;
+            console.log("Deu Bom", data);
+        })
+        promise.catch((err) => {
+            console.log("Deu ruim", err.response.statusText);
+        })
+
+    }, [])
+
     return (
         <Section>
             <Header />
             <Container>
                 <h1>Meus hábitos</h1>
-                <button>+</button>
+                <button onClick={() => setHabitTable(!habitTable)}>+</button>
             </Container>
+
+            {habitTable ? <Table habit={newHabit}
+                token={loginData.token}
+                callback={setNewHabit}
+                callbackTable={setHabitTable}
+                load={load}
+                callbackLoad={setLoad}
+            /> : " "}
+
             <p>Você não tem nenhum hábito cadastrado ainda.
                 Adicione um hábito para começar a trackear!</p>
             <Footer />
@@ -46,3 +89,4 @@ const Container = styled.div`
         border-radius: 4.63636px;
     }
 `
+

@@ -24,7 +24,6 @@ const Section = styled.div`
 const Container = styled.div`
     margin-top: 20%;
     display: flex;
-    justify-content: space-around;
     align-items: center;
 
     h1 {

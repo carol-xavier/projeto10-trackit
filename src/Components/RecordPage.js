@@ -4,23 +4,28 @@ import Footer from './Footer';
 
 function RecordPage() {
     return (
-        <section>
+        <Section>
             <Header />
             <Container>
                 <h1>Histórico</h1>
             </Container>
             <Footer />
-        </section>
+        </Section>
     )
 }
 
 export default RecordPage;
+const Section = styled.div`
+    background-color: #E5E5E5;
+    height: 80vh;
+`
 
 const Container = styled.div`
-    height: 80vh;
+    margin-top: 20%;
+    display: flex;
+    align-items: center;
     
     h1 {
-        margin-top: 90px;
         font-family: 'Lexend Deca';
         font-weight: 400;
         font-size: 22.976px;
