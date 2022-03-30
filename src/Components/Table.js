@@ -1,9 +1,8 @@
 import {ThreeDots} from 'react-loader-spinner';
 import axios from 'axios';
-import HabitsPage from './HabitsPage';
 
 function Table(props){
-    const {habit, token, callback, callbackTable, load, callbackLoad} = props;
+    const {habit, token, callback, callbackEffect, callbackTable, load, callbackLoad} = props;
     const {name, days} = habit;
 
     function cleanTable(){
@@ -14,6 +13,7 @@ function Table(props){
     function sendHabit(event) {
         event.preventDefault();
         callbackLoad(true);
+        callbackEffect(true);
 
         const config = {
             headers: {
@@ -33,14 +33,14 @@ function Table(props){
             callback({ name: "", days: [] });
             callbackLoad(false);
             callbackTable(false);
-            // HabitsPage();
             console.log("Habito criado", data);
         });
 
         promise.catch((err) => {
             console.log(err.response.statusText);
             callbackLoad(false);
-            alert(`Não foi possível processar o hábito. ${err.response.statusText}`)
+            alert(`Não foi possível processar o hábito. ${err.response.statusText}`);
+            callback({ name: "", days: [] });
         })
     }
 
