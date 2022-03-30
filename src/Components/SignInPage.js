@@ -1,18 +1,21 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import UserContext from '../Contexts/UserContext';
 import styled from 'styled-components';
 import logo from '../assets/trackit.png';
+import {ThreeDots} from 'react-loader-spinner';
 
 function SignInPage(){
     const { userData, setUserData } = useContext(UserContext);
-    
+    const [load, setLoad] = useState(false);
+    console.log(userData.image);
     const navigate = useNavigate();
 
     function signInUser(event) {
         event.preventDefault();
 
+        setLoad(true);
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up";
         const object = {
             email: userData.email,
@@ -32,6 +35,7 @@ function SignInPage(){
         promise.catch((err) => {
             console.log(err.response.statusText);
             alert("Usuário não cadastrado. Por favor, tente novamente.");
+            setLoad(false);
             setUserData({ email: '', name: '', image: '', password: '' });
         });
     }
@@ -40,11 +44,17 @@ function SignInPage(){
         <Section>
             <img src={logo} />
             <form onSubmit={signInUser}>
-            <input type="email" value={userData.email} placeholder="email" onInput={e => setUserData({...userData, email: e.target.value})} />
-                <input value={userData.name} placeholder="nome" onInput={e => setUserData({...userData, name: e.target.value})}/>
-                <input type="text" value={userData.image} placeholder="foto" onInput={e => setUserData({...userData, image: e.target.value})} />
-                <input type="password" value={userData.password} placeholder="senha" onInput={e => setUserData({...userData, password: e.target.value})}/>
-                <button>Cadastrar</button>
+                <input required type="email" value={userData.email} placeholder="email" 
+                    onInput={e => setUserData({...userData, email: e.target.value})} disabled={load} />
+                <input required value={userData.name} placeholder="nome" 
+                    onInput={e => setUserData({...userData, name: e.target.value})} disabled={load} />
+                <input required type="text" value={userData.image} placeholder="foto"  
+                    onInput={e => setUserData({...userData, image: e.target.value})} disabled={load} />
+                <input required type="password" value={userData.password} placeholder="senha" 
+                    onInput={e => setUserData({...userData, password: e.target.value})} disabled={load}/>
+                <button>{load ? 
+                    <ThreeDots color="#FFFFFF" width="51px" height="13px" /> : <div>Cadastrar</div>}
+                </button>
             </form>
             <Link to={"/"}>
                 <p>Já tem uma conta? Faça login!</p>
@@ -92,18 +102,6 @@ const Section = styled.div`
         color: #DBDBDB;
     }
 
-    /* input[type="file"]::-webkit-file-upload-button {
-        visibility: hidden;
-    }  
-
-    input[type="file"] {
-        color: rgba(0, 0, 0, 0);
-    }
-
-    /* input[type="file"]::-webkit-input-placeholder {
-        color: red;
-    } */ 
-
     button {
         height: 45px;
         border: none;
@@ -114,6 +112,10 @@ const Section = styled.div`
         font-family: 'Lexend Deca';
         font-weight: 400;
         font-size: 20.976px;
+
+        display:flex;
+        justify-content: center;
+        align-items: center;
     }
 
     p {

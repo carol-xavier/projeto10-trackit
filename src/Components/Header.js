@@ -1,18 +1,19 @@
+import React,{ useContext } from 'react';
+import TokenContext from '../Contexts/TokenContext';
 import styled from 'styled-components';
 
 function Header() {
+    const { loginData } = useContext(TokenContext);
+
     return (
         <Headline>
             <h1>TrackIt</h1>
-            <img src={"#"} alt=' ' />
+            <img src={`${loginData.image}`} alt='foto do usuário' />
         </Headline>
     )
 }
 
 export default Header;
-
-
-// Como importar fontes com o styled-components??
 
 
 const Headline = styled.div`

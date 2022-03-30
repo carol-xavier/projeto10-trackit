@@ -7,10 +7,10 @@ function HabitsPage() {
         <Section>
             <Header />
             <Container>
-            <h1>Meus hábitos</h1>
-            <button>+</button>
+                <h1>Meus hábitos</h1>
+                <button>+</button>
             </Container>
-            <p>Você não tem nenhum hábito cadastrado ainda. 
+            <p>Você não tem nenhum hábito cadastrado ainda.
                 Adicione um hábito para começar a trackear!</p>
             <Footer />
         </Section>
