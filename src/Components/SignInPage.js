@@ -1,12 +1,13 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import axios from 'axios';
-import UserContext from '../Context/UserContext';
+import UserContext from '../Contexts/UserContext';
 import styled from 'styled-components';
 import logo from '../assets/trackit.png';
 
 function SignInPage(){
     const { userData, setUserData } = useContext(UserContext);
+    
     const navigate = useNavigate();
 
     function signInUser(event) {

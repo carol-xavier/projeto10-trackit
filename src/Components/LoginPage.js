@@ -1,16 +1,46 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import {Link, useNavigate} from 'react-router-dom';
+import axios from 'axios';
+import TokenContext from '../Contexts/TokenContext';
 import logo from '../assets/trackit.png';
 import styled from 'styled-components';
 
 function LoginPage() {
+    const { token, setToken } = useContext(TokenContext);
+    const [userLogin, setUserLogin] = useState({email:"", password:""});
+
+    const navigate = useNavigate();
+    
+    function login(event) {
+        event.preventDefault();
+
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login";
+        const object = {
+            email: userLogin.email,
+            password: userLogin.password
+        }
+
+        const promise = axios.post(URL,object);
+        
+        promise.then(response => {
+            const {data} = response;
+            setToken(data.token);
+            navigate("/hoje");            
+        });
+
+        promise.catch((err) => {
+            console.log(err.response.statusText);
+            alert("Falha no login. Tente novamente.");
+            setUserLogin({email:"", password:""});
+        });
+    }
 
     return (
         <Section>
             <img src={logo} />
-            <form>
-                <input type="email" placeholder="email"></input>
-                <input type="password" placeholder="senha"></input>
+            <form onSubmit={login}>
+                <input type="email" value={userLogin.email} placeholder="email" onInput={e => setUserLogin({...userLogin, email: e.target.value})} />
+                <input type="password" value={userLogin.password} placeholder="senha" onInput={e => setUserLogin({...userLogin, password: e.target.value})} />
                 <button>Entrar</button>
             </form>
             <Link to={"/cadastro"}>
