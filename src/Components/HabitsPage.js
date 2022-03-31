@@ -3,6 +3,7 @@ import TokenContext from '../Contexts/TokenContext';
 import axios from 'axios';
 import styled from 'styled-components';
 import Table from './Table';
+import PopUpDelete from './PopUpDelete';
 import Header from './Header';
 import Footer from './Footer';
 import trashcan from '../assets/pictures/trashcan-icon.png';
@@ -10,7 +11,6 @@ import { ThemeProvider } from 'styled-components';
 
 function HabitsPage() {
     const { loginData } = useContext(TokenContext);
-    console.log(loginData.token);
 
     const [habitTable, setHabitTable] = useState(false);
 
@@ -22,10 +22,12 @@ function HabitsPage() {
 
     const [callUseEffect, setCallUseEffect] = useState(false);
 
+    const [popUp, setPopUp] = useState("");
+
     useEffect(() => {
         const config = {
             headers: {
-                "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTg4NCwiaWF0IjoxNjQ4NzM5MDM1fQ.GnIrpTBmBMcb6CROzemO8tFRhgizl-bJ3-2ddzhvkoc`
+                "Authorization": `Bearer ${loginData.token}`
             }
         }
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
@@ -43,12 +45,16 @@ function HabitsPage() {
 
     }, [callUseEffect])
 
+    function askDeleteHabit(id){
+        setPopUp(id);
+    }
+
     function showHabitsList() {
         return renderHabits.map((habit) => {
             const { id, name, days } = habit;
             return <HabitContainer key={id}>
                 <h1>{name}</h1>
-                <button><img src={trashcan} alt='Botão para deletar' /></button>
+                <button onClick={() => askDeleteHabit(id)}><img src={trashcan} alt='Botão para deletar' /></button>
                 <section>     {/*  TEM COMO NÃO REPETIR ESSES ELEMENTOS? */}
                     <ThemeProvider theme={days.includes(7) ? invertedColor : color}>
                         <Day index="7">D</Day>
@@ -93,6 +99,12 @@ function HabitsPage() {
                 load={load}
                 callbackLoad={setLoad}
             /> : " "}
+
+            {popUp && <PopUpDelete 
+                id={popUp} 
+                callbackEffect={setCallUseEffect} 
+                token={loginData.token}
+                callbackPopUp = {setPopUp} />}
 
             <HabitList>
                 {(renderHabits.length > 0) ? showHabits

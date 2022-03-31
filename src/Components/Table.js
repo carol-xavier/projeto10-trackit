@@ -15,11 +15,10 @@ function Table(props) {
     function sendHabit(event) {
         event.preventDefault();
         callbackLoad(true);
-        callbackEffect(true);
 
         const config = {
             headers: {
-                "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTg4NCwiaWF0IjoxNjQ4NzQ1NTY2fQ.p4m48CAmW9dXhPtHjt-bC0Rp4NfCRjBgFcOuQ6OTWLA`
+                "Authorization": `Bearer ${token}`
             }
         }
 
@@ -36,7 +35,7 @@ function Table(props) {
                 callback({ name: "", days: [] });
                 callbackLoad(false);
                 callbackTable(false);
-                console.log("Habito criado", data);
+                callbackEffect(true);
             });
 
             promise.catch((err) => {
@@ -51,7 +50,6 @@ function Table(props) {
         }
     }
 
-    console.log(days);
 
     return <Form>
         <form onSubmit={sendHabit}>
