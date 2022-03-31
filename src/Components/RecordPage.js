@@ -17,11 +17,11 @@ function RecordPage() {
 export default RecordPage;
 const Section = styled.div`
     background-color: #E5E5E5;
-    height: 80vh;
+    height: 100vh;
 `
 
 const Container = styled.div`
-    margin-top: 20%;
+    margin-top: 25%;
     display: flex;
     align-items: center;
     

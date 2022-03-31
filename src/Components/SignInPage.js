@@ -3,7 +3,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import UserContext from '../Contexts/UserContext';
 import styled from 'styled-components';
-import logo from '../assets/trackit.png';
+import logo from '../assets/pictures/trackit.png';
 import {ThreeDots} from 'react-loader-spinner';
 
 function SignInPage(){

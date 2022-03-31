@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import '../assets/style.css';
+import '../assets/style/style.css';
+import '../assets/style/reset.css';
 import UserContext from '../Contexts/UserContext';
 import TokenContext from '../Contexts/TokenContext';
 import HabitsContext from '../Contexts/HabitsContext';

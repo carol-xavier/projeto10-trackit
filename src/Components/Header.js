@@ -6,20 +6,21 @@ function Header() {
     const { loginData } = useContext(TokenContext);
 
     return (
-        <Headline>
+        <Top>
             <h1>TrackIt</h1>
             <img src={`${loginData.image}`} alt='foto do usuário' />
-        </Headline>
+        </Top>
     )
 }
 
 export default Header;
 
 
-const Headline = styled.div`
+const Top = styled.div`
     position: fixed;
     top:0;
     left: 0;
+    z-index: 2;
     width: 100%;
     height: 70px;
     background-color: #126BA5;
