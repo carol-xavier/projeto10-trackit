@@ -15,7 +15,7 @@ function HabitsPage() {
     const [habitTable, setHabitTable] = useState(false);
 
     const [renderHabits, setRenderHabits] = useState([]);
-
+    
     const [newHabit, setNewHabit] = useState({ name: '', days: [] });
 
     const [load, setLoad] = useState(false);
@@ -50,9 +50,10 @@ function HabitsPage() {
     }
 
     function showHabitsList() {
+        
         return renderHabits.map((habit) => {
             const { id, name, days } = habit;
-            <HabitContainer key={id}>
+            return <HabitContainer key={id}>
                 <h1>{name}</h1>
                 <button onClick={() => askDeleteHabit(id)}><img src={trashcan} alt='Botão para deletar' /></button>
                 <section>     {/*  TEM COMO NÃO REPETIR ESSES ELEMENTOS? */}
@@ -81,7 +82,7 @@ function HabitsPage() {
             </HabitContainer>
         })
     }
-    const showHabits = showHabitsList();
+    const showTotalHabits = showHabitsList();
 
     return (
         <Section>
@@ -107,7 +108,7 @@ function HabitsPage() {
                 callbackPopUp = {setPopUp} />}
 
             <HabitList>
-                {(renderHabits.length > 0) ? showHabits
+                {renderHabits.length > 0 ? showTotalHabits
                     : <p>Você não tem nenhum hábito cadastrado ainda.
                         Adicione um hábito para começar a trackear!</p>}
             </HabitList>

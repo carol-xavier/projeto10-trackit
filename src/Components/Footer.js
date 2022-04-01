@@ -6,9 +6,7 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 function Footer() {
-    const {habits, setHabits} = useContext(HabitsContext);
-
-    const percentage = 60;
+    const { habitsPercentage, setHabitsPercentage } = useContext(HabitsContext);
 
     const navigate = useNavigate();
 
@@ -17,7 +15,7 @@ function Footer() {
             <div onClick={() => navigate("/habitos")}>Hábitos</div>
             <section onClick={() => navigate("/hoje")}>
                 <CircularProgressbar
-                    value={percentage}
+                    value={habitsPercentage}
                     text={`Hoje`}
                     background
                     backgroundPadding={6}

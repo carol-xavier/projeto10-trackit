@@ -24,10 +24,15 @@ function PopUpDelete(props){
         })
     }
 
+    function cancelRequest(){
+        callbackPopUp(false);
+    
+    }
+
     return <PopUp>
         <div>
         <h1>Tem certeza que deseja deletar esse hábito?</h1>
-        <h1>Cancelar</h1>
+        <h1 onClick={cancelRequest}>Cancelar</h1>
         <button onClick={deleteHabit}>Confirmar</button>
         </div>
     </PopUp>

@@ -18,13 +18,13 @@ export default function App() {
     const [loginData, setLoginData] = useState({ image: '', token: '' });
     const getLoginData = { loginData, setLoginData };
 
-    const [habits, setHabits] = useState("");
-    const getHabits = {habits, setHabits}
+    const [habitsPercentage, setHabitsPercentage] = useState(null);
+    const getHabitsPercentage = { habitsPercentage, setHabitsPercentage }
 
     return (
         <UserContext.Provider value={getData}>
             <TokenContext.Provider value={getLoginData}>
-                <HabitsContext.Provider value={getHabits}>
+                <HabitsContext.Provider value={getHabitsPercentage}>
                     <BrowserRouter>
                         <Routes>
                             <Route path="/" element={<LoginPage />} />

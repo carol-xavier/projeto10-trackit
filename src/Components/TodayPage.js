@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import TokenContext from '../Contexts/TokenContext';
+import HabitsContext from '../Contexts/HabitsContext';
 import axios from 'axios';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
@@ -7,12 +8,14 @@ import 'dayjs/locale/pt-br';
 import Header from './Header';
 import Footer from './Footer';
 import check from '../assets/pictures/check.png';
+import { ThemeProvider } from 'styled-components';
 
 function TodayPage() {
     const { loginData } = useContext(TokenContext);
-    console.log(loginData.token);
-
+    const {habitsPercentage, setHabitsPercentage} = useContext(HabitsContext);
+    console.log(habitsPercentage);
     const [todayHabits, setTodayHabits] = useState([]);
+    const [callTodayHabits, setCallTodayHabits] = useState(false);
 
     dayjs.locale('pt-br');
     const day = require('dayjs/locale/pt-br');
@@ -25,7 +28,7 @@ function TodayPage() {
     useEffect(() => {
         const config = {
             headers: {
-                "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTg4NCwiaWF0IjoxNjQ4ODI4Njk4fQ.4dUmkfEvZw-0jkaxye5xa69KH1kD5pJIafLR2kns2Sk`
+                "Authorization": `Bearer ${loginData.token} `
             }
         }
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today";
@@ -33,48 +36,87 @@ function TodayPage() {
 
         promise.then((response) => {
             const { data } = response;
-            console.log("DEU CERTO", data)
             setTodayHabits(data);
+            getPercentage();
         })
         promise.catch((err) => {
             console.log("Deu ruim", err.response.statusText);
         })
-    }, [])
+    }, [callTodayHabits])
 
-    // function checkDoneHabit(){
-    //     return console.log('YAY FEZ A TAREFA');
-    // }
-    // function checkUndoneHabit(){
-    //     return console.log('VAI FAZER A TAREFA');
-    // }
+    function getPercentage(){
+        const doneHabits = todayHabits.filter((habit) => habit.done===true);
+        const percentage = (doneHabits.length / todayHabits.length)*100;
+        setHabitsPercentage(Number(percentage));
+    }
+
+    function checkDoneHabit(id) {
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${loginData.token}`
+            }
+        }
+        const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`
+        const promise = axios.post(URL, "", config);
+
+        promise.then(() => {
+            setCallTodayHabits(!callTodayHabits);
+        })
+        promise.catch((err) => {
+            console.log("Deu ruim", err.response.statusText);
+        })
+    }
+    function checkUndoneHabit(id) {
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${loginData.token}`
+            }
+        }
+        const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`
+        const promise = axios.post(URL, "", config);
+
+        promise.then(() => {
+            setCallTodayHabits(!callTodayHabits);
+        })
+        promise.catch((err) => {
+            console.log("Deu ruim", err.response.statusText);
+        })
+    }
 
     function showTodayList() {
         return todayHabits.map((habit) => {
             const { id, name, done, currentSequence, highestSequence } = habit;
             return <ToDo key={id}>
                 <h6>{name}</h6>
-                <p>Sequência atual: {currentSequence} dias</p>
-                <p>Sequência atual: {highestSequence} dias</p>
-                <div>
-                    <input type="checkbox" value={done} id='check' onClick={()=>console.log(habit)}/>
-                    <label htmlFor='check'><img src={check} /></label>
-                </div>
+                {(currentSequence !== "0" && currentSequence !== "1")  ? (<p>Sequência atual: {currentSequence} dia</p>) 
+                    : (<p>Sequência atual: {currentSequence} dias</p>) }
+
+                {(highestSequence !== "0" && highestSequence !== "1")  ? (<p>Sequência atual: {highestSequence} dia</p>) 
+                    : (<p>Sequência atual: {highestSequence} dias</p>) }
+                
+                <ThemeProvider theme={done ? selectedTheme : deafultTheme}>
+                    <Checkbox onClick={() => { done ? checkUndoneHabit(id) : checkDoneHabit(id) }}>
+                        <img src={check} />
+                    </Checkbox>
+                </ThemeProvider>
             </ToDo>
         })
     }
     const showHabits = showTodayList();
 
+    getPercentage();
     return (
         <Section>
             <Header />
             <Container>
                 <h1>{today}</h1>
-                <h2>Nenum hábito concluído ainda</h2>
+                {habitsPercentage ? <p>{habitsPercentage}% dos hábitos concluídos</p> 
+                    : <h2>Nenum hábito concluído ainda</h2>}
             </Container>
 
             <HabitsList>
-                {todayHabits.length > 0 ? showHabits :
-                    <h3>Você pode criar uns hábitos bacaninhas lá na página Hábitos</h3>}
+                {todayHabits.length > 0 ? showHabits 
+                     : <h3>Você pode criar uns hábitos bacaninhas lá na página Hábitos</h3>}
             </HabitsList>
             <Footer />
         </Section>
@@ -117,6 +159,14 @@ const Container = styled.div`
         line-height: 22px;
         color: #BABABA;
     }
+
+    p {
+        font-family: 'Lexend Deca';
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 22px;
+        color: #8FC549;
+    }
 `;
 
 const HabitsList = styled.div`
@@ -151,28 +201,31 @@ const ToDo = styled.div`
         margin-left: 15px;
         font-size: 13px;
     }
+`;
 
-    div input {
-        display: none!important;
-    }
-    div label img{
-        width: 32px;
-        height: 35px;
-    }
-    div input[type=checkbox] + label {
-        position:absolute;
+const Checkbox = styled.div`
+     position:absolute;
         right: 10px;
         bottom:10px;
         width:69px;
         height: 69px;
         border-radius: 5px;
-        background-color:#EBEBEB;
+        background-color:${props => props.theme.dfColor};
         border: 1px solid #D4D4D4;
         cursor: pointer;
         text-align: center;
         line-height: 87px;
-    }
-    div input[type=checkbox]:checked + label  {
-        background-color: #8FC549;
-    }
+
+        img{
+            width: 32px;
+            height: 35px;
+        }
 `;
+
+const deafultTheme = {
+    dfColor: '#EBEBEB'
+};
+
+const selectedTheme = {
+    dfColor: '#8FC549'
+};
