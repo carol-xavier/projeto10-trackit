@@ -40,7 +40,7 @@ function HabitsPage() {
             showHabitsList();
         })
         promise.catch((err) => {
-            console.log("Deu ruim", err.response.statusText);
+            console.log(err.response.statusText);
         })
 
     }, [callUseEffect])
@@ -52,7 +52,7 @@ function HabitsPage() {
     function showHabitsList() {
         return renderHabits.map((habit) => {
             const { id, name, days } = habit;
-            return <HabitContainer key={id}>
+            <HabitContainer key={id}>
                 <h1>{name}</h1>
                 <button onClick={() => askDeleteHabit(id)}><img src={trashcan} alt='Botão para deletar' /></button>
                 <section>     {/*  TEM COMO NÃO REPETIR ESSES ELEMENTOS? */}
