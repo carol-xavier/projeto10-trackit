@@ -6,7 +6,7 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 function Footer() {
-    const { habitsPercentage, setHabitsPercentage } = useContext(HabitsContext);
+    const { habitsPercentage } = useContext(HabitsContext);
 
     const navigate = useNavigate();
 
@@ -44,6 +44,9 @@ const FooterStyle = styled.div`
     background-color: #FFFFFF;
 
     color: #52B6FF;
+    font-family: 'Lexend Deca';
+    font-weight: 400;
+    font-size: 18px;
 
     display: flex;
     justify-content: space-around;
@@ -55,12 +58,6 @@ const FooterStyle = styled.div`
         width:91px;
         height: 91px;
     }
-
-    div {
-        font-family: 'Lexend Deca';
-        font-weight: 400;
-        font-size: 18px;
-    }
-`
+`;
 
 

@@ -44,7 +44,7 @@ function LoginPage() {
 
     return (
         <Section>
-            <img src={logo} />
+            <img src={logo} alt='Logo do TrackIt' />
             <form onSubmit={login}>
                 <input required type="email" value={userLogin.email} placeholder="email" 
                         onInput={e => setUserLogin({...userLogin, email: e.target.value})} disabled={load} />
@@ -118,6 +118,7 @@ const Section = styled.div`
     }
 
     p {
+        margin-top: 25px;
         font-family: 'Lexend Deca';
         font-weight: 400;
         font-size: 15px;

@@ -18,10 +18,12 @@ export default RecordPage;
 const Section = styled.div`
     background-color: #E5E5E5;
     height: 100vh;
+    overflow-y: scroll;
 `
 
 const Container = styled.div`
     margin-top: 25%;
+    margin-left: 10px;
     display: flex;
     align-items: center;
     

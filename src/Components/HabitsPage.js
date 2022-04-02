@@ -16,7 +16,7 @@ function HabitsPage() {
 
     const [renderHabits, setRenderHabits] = useState([]);
     
-    const [newHabit, setNewHabit] = useState({ name: '', days: [] });
+    const [newHabit, setNewHabit] = useState({ name: '', days: new Map()});
 
     const [load, setLoad] = useState(false);
 
@@ -50,33 +50,32 @@ function HabitsPage() {
     }
 
     function showHabitsList() {
-        
         return renderHabits.map((habit) => {
             const { id, name, days } = habit;
             return <HabitContainer key={id}>
                 <h1>{name}</h1>
                 <button onClick={() => askDeleteHabit(id)}><img src={trashcan} alt='Botão para deletar' /></button>
-                <section>     {/*  TEM COMO NÃO REPETIR ESSES ELEMENTOS? */}
+                <section>    
                     <ThemeProvider theme={days.includes(7) ? invertedColor : color}>
-                        <Day index="7">D</Day>
+                        <Day>D</Day>
                     </ThemeProvider>
                     <ThemeProvider theme={days.includes(1) ? invertedColor : color}>
-                        <Day index="1">S</Day>
+                        <Day>S</Day>
                     </ThemeProvider>
                     <ThemeProvider theme={days.includes(2) ? invertedColor : color}>
-                        <Day index="2">T</Day>
+                        <Day>T</Day>
                     </ThemeProvider>
                     <ThemeProvider theme={days.includes(3) ? invertedColor : color}>
-                        <Day index="3">Q</Day>
+                        <Day>Q</Day>
                     </ThemeProvider>
                     <ThemeProvider theme={days.includes(4) ? invertedColor : color}>
-                        <Day index="4">Q</Day>
+                        <Day>Q</Day>
                     </ThemeProvider>
                     <ThemeProvider theme={days.includes(5) ? invertedColor : color}>
-                        <Day index="5">S</Day>
+                        <Day>S</Day>
                     </ThemeProvider>
                     <ThemeProvider theme={days.includes(6) ? invertedColor : color}>
-                        <Day index="6">S</Day>
+                        <Day>S</Day>
                     </ThemeProvider>
                 </section>
             </HabitContainer>
@@ -165,7 +164,7 @@ const Container = styled.div`
 `;
 
 const HabitList = styled.div`
-    margin-bottom:20%;
+    margin-bottom:30%;
 `;
 const HabitContainer = styled.div`
     position:relative;

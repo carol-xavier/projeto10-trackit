@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { ThreeDots } from 'react-loader-spinner';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -22,16 +21,15 @@ function Table(props) {
             }
         }
 
-        if (days.length > 0) {
+        if (days.size > 0) {
             const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits';
             const object = {
                 name,
-                days
+                days: Array.from(days.values())
             }
 
             const promise = axios.post(URL, object, config);
-            promise.then((response) => {
-                const { data } = response;
+            promise.then(() => {
                 callback({ name: "", days: [] });
                 callbackLoad(false);
                 callbackTable(false);
@@ -50,6 +48,17 @@ function Table(props) {
         }
     }
 
+    function getDay(id, number){
+        const selectDay = days.has(id);
+
+        if(selectDay){
+            days.delete(id);
+            callback({...habit, days: new Map(days)})
+        } else {
+            callback({...habit, days: new Map(days.set(id, number))})
+        }
+    }
+
 
     return <Form>
         <form onSubmit={sendHabit}>
@@ -59,27 +68,27 @@ function Table(props) {
                     onInput={e => callback({ ...habit, name: e.target.value })} disabled={load} />
 
                 <div>
-                    <input value={days} type="checkbox" id='7'
-                        onInput={() => callback({ ...habit, days: [...days, 7] })} disabled={load} />
-                    <label htmlFor='7'>D</label>
-                    <input value={days} type="checkbox" id='1'
-                        onInput={() => callback({ ...habit, days: [...days, 1] })} disabled={load} />
-                    <label htmlFor='1'>S</label>
-                    <input value={days} type="checkbox" id='2'
-                        onInput={() => callback({ ...habit, days: [...days, 2] })} disabled={load} />
-                    <label htmlFor='2'>T</label>
-                    <input value={days} type="checkbox" id='3'
-                        onInput={() => callback({ ...habit, days: [...days, 3] })} disabled={load} />
-                    <label htmlFor='3'>Q</label>
-                    <input value={days} type="checkbox" id='4'
-                        onInput={() => callback({ ...habit, days: [...days, 4] })} disabled={load} />
-                    <label htmlFor='4'>Q</label>
-                    <input value={days} type="checkbox" id='5'
-                        onInput={() => callback({ ...habit, days: [...days, 5] })} disabled={load} />
-                    <label htmlFor='5'>S</label>
-                    <input value={days} type="checkbox" id='6'
-                        onInput={() => callback({ ...habit, days: [...days, 6] })} disabled={load} />
-                    <label htmlFor='6'>S</label>
+                    <input value={days} type="checkbox" id='domingo'
+                        onInput={() => getDay('domingo', 7)} disabled={load} />
+                    <label htmlFor='domingo'>D</label>
+                    <input value={days} type="checkbox" id='segunda'
+                        onInput={() => getDay('segunda', 1)} disabled={load} />
+                    <label htmlFor='segunda'>S</label>
+                    <input value={days} type="checkbox" id='terca'
+                        onInput={() => getDay('terca', 2)} disabled={load} />
+                    <label htmlFor='terca'>T</label>
+                    <input value={days} type="checkbox" id='quarta'
+                        onInput={() => getDay('quarta', 3)} disabled={load} />
+                    <label htmlFor='quarta'>Q</label>
+                    <input value={days} type="checkbox" id='quinta'
+                        onInput={() => getDay('quinta', 4)} disabled={load} />
+                    <label htmlFor='quinta'>Q</label>
+                    <input value={days} type="checkbox" id='sexta'
+                        onInput={() => getDay('sexta', 5)} disabled={load} />
+                    <label htmlFor='sexta'>S</label>
+                    <input value={days} type="checkbox" id='sabado'
+                        onInput={() => getDay('sabado', 6)} disabled={load} />
+                    <label htmlFor='sabado'>S</label>
                 </div>
 
             </section>

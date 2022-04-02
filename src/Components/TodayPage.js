@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import { ThemeProvider } from 'styled-components';
 import TokenContext from '../Contexts/TokenContext';
 import HabitsContext from '../Contexts/HabitsContext';
 import axios from 'axios';
@@ -8,12 +9,12 @@ import 'dayjs/locale/pt-br';
 import Header from './Header';
 import Footer from './Footer';
 import check from '../assets/pictures/check.png';
-import { ThemeProvider } from 'styled-components';
+
 
 function TodayPage() {
     const { loginData } = useContext(TokenContext);
-    const {habitsPercentage, setHabitsPercentage} = useContext(HabitsContext);
-    console.log(habitsPercentage);
+    const { habitsPercentage, setHabitsPercentage } = useContext(HabitsContext);
+
     const [todayHabits, setTodayHabits] = useState([]);
     const [callTodayHabits, setCallTodayHabits] = useState(false);
 
@@ -44,10 +45,13 @@ function TodayPage() {
         })
     }, [callTodayHabits])
 
-    function getPercentage(){
-        const doneHabits = todayHabits.filter((habit) => habit.done===true);
-        const percentage = (doneHabits.length / todayHabits.length)*100;
-        setHabitsPercentage(Number(percentage));
+    function getPercentage() {
+        const doneHabits = todayHabits.filter((habit) => habit.done === true);
+        let percentage = 0;
+        if (todayHabits.length > 0) {
+            percentage = Math.round((doneHabits.length / todayHabits.length) * 100);
+        }
+        setHabitsPercentage(percentage);
     }
 
     function checkDoneHabit(id) {
@@ -88,15 +92,18 @@ function TodayPage() {
             const { id, name, done, currentSequence, highestSequence } = habit;
             return <ToDo key={id}>
                 <h6>{name}</h6>
-                {(currentSequence !== "0" && currentSequence !== "1")  ? (<p>Sequência atual: {currentSequence} dia</p>) 
-                    : (<p>Sequência atual: {currentSequence} dias</p>) }
 
-                {(highestSequence !== "0" && highestSequence !== "1")  ? (<p>Sequência atual: {highestSequence} dia</p>) 
-                    : (<p>Sequência atual: {highestSequence} dias</p>) }
-                
+                <p>Sequência atual: <SpanCurrent selected={done}>{currentSequence}
+                    {currentSequence !== "0" && currentSequence !== "1" ? ' dia' : ' dias'}</SpanCurrent>
+                </p>
+
+                <p>Seu recorde: <SpanHighest currentSeq={currentSequence} highestSeq={highestSequence} >{highestSequence}
+                    {highestSequence !== "0" && highestSequence !== "1" ? ' dia' : ' dias'}</SpanHighest>
+                </p>
+
                 <ThemeProvider theme={done ? selectedTheme : deafultTheme}>
                     <Checkbox onClick={() => { done ? checkUndoneHabit(id) : checkDoneHabit(id) }}>
-                        <img src={check} />
+                        <img src={check} alt="Botão check" />
                     </Checkbox>
                 </ThemeProvider>
             </ToDo>
@@ -110,13 +117,13 @@ function TodayPage() {
             <Header />
             <Container>
                 <h1>{today}</h1>
-                {habitsPercentage ? <p>{habitsPercentage}% dos hábitos concluídos</p> 
+                {habitsPercentage ? <p>{habitsPercentage}% dos hábitos concluídos</p>
                     : <h2>Nenum hábito concluído ainda</h2>}
             </Container>
 
             <HabitsList>
-                {todayHabits.length > 0 ? showHabits 
-                     : <h3>Você pode criar uns hábitos bacaninhas lá na página Hábitos</h3>}
+                {todayHabits.length > 0 ? showHabits
+                    : <h3>Você pode criar uns hábitos bacaninhas lá na página Hábitos</h3>}
             </HabitsList>
             <Footer />
         </Section>
@@ -124,6 +131,25 @@ function TodayPage() {
 }
 
 export default TodayPage;
+
+function currentDaysColor(props) {
+    const { selected } = props;
+    if (selected) {
+        return selectedTheme.dfColor;
+    } else {
+        return defaultDayColor.dfColor;
+    }
+}
+
+function highestDayColor(currentSeq, highestSeq){
+    if (highestSeq !== 0) {
+        if (currentSeq === highestSeq) {
+            return selectedTheme.dfColor;
+        } else {
+            return defaultDayColor.dfColor;
+        }
+    } 
+}
 
 const Section = styled.div`
     background-color: #E5E5E5;
@@ -170,7 +196,7 @@ const Container = styled.div`
 `;
 
 const HabitsList = styled.div`
-    margin-bottom:20%;
+    margin-bottom:30%;
     display: flex;
     flex-direction:column;
     align-items: center;
@@ -204,17 +230,17 @@ const ToDo = styled.div`
 `;
 
 const Checkbox = styled.div`
-     position:absolute;
-        right: 10px;
-        bottom:10px;
-        width:69px;
-        height: 69px;
-        border-radius: 5px;
-        background-color:${props => props.theme.dfColor};
-        border: 1px solid #D4D4D4;
-        cursor: pointer;
-        text-align: center;
-        line-height: 87px;
+    position:absolute;
+    right: 10px;
+    bottom:10px;
+    width:69px;
+    height: 69px;
+    border-radius: 5px;
+    background-color:${props => props.theme.dfColor};
+    border: 1px solid #D4D4D4;
+    cursor: pointer;
+    text-align: center;
+    line-height: 87px;
 
         img{
             width: 32px;
@@ -229,3 +255,16 @@ const deafultTheme = {
 const selectedTheme = {
     dfColor: '#8FC549'
 };
+
+const defaultDayColor = {
+    dfColor: '#666666'
+}
+
+const SpanHighest = styled.span`
+    color: ${(props) => highestDayColor(props.currentSeq, props.highestSeq)}
+`;
+
+const SpanCurrent = styled.span`
+    color: ${(selected) => currentDaysColor(selected)}
+`;
+
