@@ -151,6 +151,7 @@ const Container = styled.div`
         border: none;
         background: #52B6FF;
         border-radius: 5px;
+        margin-right: 15px;
 
         font-family: 'Lexend Deca';
         color:#FFFFFF;

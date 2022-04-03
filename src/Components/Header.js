@@ -31,7 +31,7 @@ const Top = styled.div`
     justify-content: space-between;
 
     h1 {
-        margin-left: 5%;
+        margin-left: 15px;
         font-family: 'Playball';
         font-weight: 400;
         font-size: 38.982px;
@@ -39,7 +39,7 @@ const Top = styled.div`
     }
 
     img {
-        margin-right: 7%;
+        margin-right: 20px;
         width: 51px;
         height: 51px;
         border-radius: 98.5px;
