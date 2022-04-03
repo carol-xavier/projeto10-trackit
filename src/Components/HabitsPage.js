@@ -50,33 +50,27 @@ function HabitsPage() {
     }
 
     function showHabitsList() {
+        const weekDays = [
+            { letter: 'D', number: 0 },
+            { letter: 'S', number: 1 },
+            { letter: 'T', number: 2 },
+            { letter: 'Q', number: 3 },
+            { letter: 'Q', number: 4 },
+            { letter: 'S', number: 5 },
+            { letter: 'S', number: 6 }
+        ];
+
         return renderHabits.map((habit) => {
             const { id, name, days } = habit;
             return <HabitContainer key={id}>
                 <h1>{name}</h1>
                 <button onClick={() => askDeleteHabit(id)}><img src={trashcan} alt='Botão para deletar' /></button>
                 <section>    
-                    <ThemeProvider theme={days.includes(7) ? invertedColor : color}>
-                        <Day>D</Day>
-                    </ThemeProvider>
-                    <ThemeProvider theme={days.includes(1) ? invertedColor : color}>
-                        <Day>S</Day>
-                    </ThemeProvider>
-                    <ThemeProvider theme={days.includes(2) ? invertedColor : color}>
-                        <Day>T</Day>
-                    </ThemeProvider>
-                    <ThemeProvider theme={days.includes(3) ? invertedColor : color}>
-                        <Day>Q</Day>
-                    </ThemeProvider>
-                    <ThemeProvider theme={days.includes(4) ? invertedColor : color}>
-                        <Day>Q</Day>
-                    </ThemeProvider>
-                    <ThemeProvider theme={days.includes(5) ? invertedColor : color}>
-                        <Day>S</Day>
-                    </ThemeProvider>
-                    <ThemeProvider theme={days.includes(6) ? invertedColor : color}>
-                        <Day>S</Day>
-                    </ThemeProvider>
+                    {weekDays.map((day, index) => {
+                        return <ThemeProvider theme={days.includes(day.number) ? invertedColor : color}>
+                            <Day key={index}>{day.letter}</Day>
+                        </ThemeProvider>;
+                    })}
                 </section>
             </HabitContainer>
         })
@@ -91,7 +85,9 @@ function HabitsPage() {
                 <button onClick={() => setHabitTable(!habitTable)}>+</button>
             </Container>
 
-            {habitTable ? <Table habit={newHabit}
+            <BodyBox>
+            {habitTable ? <Table 
+                habit={newHabit}
                 token={loginData.token}
                 callback={setNewHabit}
                 callbackEffect={setCallUseEffect}
@@ -106,11 +102,11 @@ function HabitsPage() {
                 token={loginData.token}
                 callbackPopUp = {setPopUp} />}
 
-            <HabitList>
-                {renderHabits.length > 0 ? showTotalHabits
-                    : <p>Você não tem nenhum hábito cadastrado ainda.
-                        Adicione um hábito para começar a trackear!</p>}
-            </HabitList>
+            {renderHabits.length > 0 ? showTotalHabits
+                : <p>Você não tem nenhum hábito cadastrado ainda.
+                    Adicione um hábito para começar a trackear!</p>}
+            </BodyBox>
+
             <Footer />
         </Section>
     )
@@ -122,10 +118,6 @@ const Section = styled.div`
     background-color: #E5E5E5;
     height: 100vh;
     overflow-y: scroll;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 
     p {
         margin-top:10%;
@@ -139,14 +131,14 @@ const Section = styled.div`
 `;
 
 const Container = styled.div`
-    margin-top: 25%;
+    margin-top: 80px;
     margin-left:10px;
     margin-right:10px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
     h1 {
-        margin-right: 150px;
         font-family: 'Lexend Deca';
         font-weight: 400;
         font-size: 22.976px;
@@ -156,22 +148,32 @@ const Container = styled.div`
     button {
         width: 40px;
         height: 35px;
-        color:#FFFFFF;
         border: none;
         background: #52B6FF;
-        border-radius: 4.63636px;
+        border-radius: 5px;
+
+        font-family: 'Lexend Deca';
+        color:#FFFFFF;
+        font-weight: 400;
+        font-size: 27px;
+        line-height: 5px;
     }
 `;
 
-const HabitList = styled.div`
+const BodyBox = styled.div `
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+
     margin-bottom:30%;
 `;
+
 const HabitContainer = styled.div`
     position:relative;
     background-color: #FFFFFF;
     margin-top:10px;
     width: 340px;
-    height: 91px;
+    /* height: 91px; */
     border-radius: 5px;
 
     font-family: 'Lexend Deca';
@@ -197,11 +199,14 @@ const HabitContainer = styled.div`
     }
 
     h1 {
+        margin:10px;
         margin-left:15px;
+        margin-right: 30px;
     }
     
     section {
-        margin-left:15px;
+        margin: 10px 15px;
+        /* margin-left:15px; */
     }
    
 `;

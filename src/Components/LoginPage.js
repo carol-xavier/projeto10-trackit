@@ -8,7 +8,7 @@ import {ThreeDots} from 'react-loader-spinner';
 
 
 function LoginPage() {
-    const { loginData, setLoginData } = useContext(TokenContext);
+    const { setLoginData } = useContext(TokenContext);
 
     const [userLogin, setUserLogin] = useState({email:"", password:""});
     const [load, setLoad] = useState(false);
@@ -87,6 +87,11 @@ const Section = styled.div`
         height: 45px;
         left: 36px;
         top: 279px;
+
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 25px;
+        color: #666666;
 
         background: #FFFFFF;
         border: 1px solid #D5D5D5;

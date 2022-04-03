@@ -88,6 +88,11 @@ const Section = styled.div`
         left: 36px;
         top: 279px;
 
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 25px;
+        color: #666666;
+        
         background: #FFFFFF;
         border: 1px solid #D5D5D5;
         box-sizing: border-box;

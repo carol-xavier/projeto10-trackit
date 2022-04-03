@@ -19,7 +19,7 @@ function TodayPage() {
     const [callTodayHabits, setCallTodayHabits] = useState(false);
 
     dayjs.locale('pt-br');
-    const day = require('dayjs/locale/pt-br');
+    require('dayjs/locale/pt-br');
     let now = dayjs();
     let getToday = dayjs(now).locale('pt-br').format('dddd, DD/MM');
     let firstLetter = getToday[0].toUpperCase();
@@ -52,31 +52,25 @@ function TodayPage() {
             percentage = Math.round((doneHabits.length / todayHabits.length) * 100);
         }
         setHabitsPercentage(percentage);
+        //Recebendo o seguinte aviso: "Warning: Cannot update a component (`App`) 
+        // while rendering a different component (`TodayPage`)" Porém, está funcionando normalmente.
     }
 
-    function checkDoneHabit(id) {
+    function checkHabit(id,done) {
+        let URL="";
+
         const config = {
             headers: {
                 "Authorization": `Bearer ${loginData.token}`
             }
         }
-        const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`
-        const promise = axios.post(URL, "", config);
-
-        promise.then(() => {
-            setCallTodayHabits(!callTodayHabits);
-        })
-        promise.catch((err) => {
-            console.log("Deu ruim", err.response.statusText);
-        })
-    }
-    function checkUndoneHabit(id) {
-        const config = {
-            headers: {
-                "Authorization": `Bearer ${loginData.token}`
-            }
+        
+        if(done){
+            URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`;
+        }else{
+            URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`;
         }
-        const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`
+        
         const promise = axios.post(URL, "", config);
 
         promise.then(() => {
@@ -93,16 +87,17 @@ function TodayPage() {
             return <ToDo key={id}>
                 <h6>{name}</h6>
 
+                <SequenceCSS>
                 <p>Sequência atual: <SpanCurrent selected={done}>{currentSequence}
                     {currentSequence !== "0" && currentSequence !== "1" ? ' dia' : ' dias'}</SpanCurrent>
                 </p>
-
                 <p>Seu recorde: <SpanHighest currentSeq={currentSequence} highestSeq={highestSequence} >{highestSequence}
                     {highestSequence !== "0" && highestSequence !== "1" ? ' dia' : ' dias'}</SpanHighest>
                 </p>
+                </SequenceCSS>
 
                 <ThemeProvider theme={done ? selectedTheme : deafultTheme}>
-                    <Checkbox onClick={() => { done ? checkUndoneHabit(id) : checkDoneHabit(id) }}>
+                    <Checkbox onClick={() => checkHabit(id, done)}>
                         <img src={check} alt="Botão check" />
                     </Checkbox>
                 </ThemeProvider>
@@ -168,8 +163,8 @@ const Section = styled.div`
 `;
 
 const Container = styled.div`
-    margin-top: 25%;
-    margin-left:20px;
+    margin-top: 80px;
+    margin-left:10px;
 
     h1 {
         font-family: 'Lexend Deca';
@@ -196,10 +191,11 @@ const Container = styled.div`
 `;
 
 const HabitsList = styled.div`
-    margin-bottom:30%;
     display: flex;
     flex-direction:column;
     align-items: center;
+
+    margin-bottom:30%;
 `;
 
 const ToDo = styled.div`
@@ -207,7 +203,6 @@ const ToDo = styled.div`
     background-color: #FFFFFF;
     margin-top:10px;
     width: 340px;
-    height: 91px;
     border-radius: 5px;
 
     font-family: 'Lexend Deca';
@@ -220,19 +215,25 @@ const ToDo = styled.div`
     justify-content: space-evenly;
 
     h6 {
+        margin: 13px;
         margin-left: 15px;
+        margin-right: 85px; 
     }
 
     p {
         margin-left: 15px;
         font-size: 13px;
+        line-height: 16px;
     }
+`;
+const SequenceCSS = styled.div `
+    margin-bottom:13px;
 `;
 
 const Checkbox = styled.div`
     position:absolute;
-    right: 10px;
-    bottom:10px;
+    right: 13px;
+    top:10%;
     width:69px;
     height: 69px;
     border-radius: 5px;
