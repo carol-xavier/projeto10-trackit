@@ -1,5 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
-import TokenContext from '../Contexts/TokenContext';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Table from './Table';

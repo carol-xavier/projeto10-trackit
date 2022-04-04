@@ -1,13 +1,28 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 function Header() {
     const image = localStorage.getItem("image");
+    const navigate = useNavigate();
+
+    function closeApp() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("image");
+        navigate("/");
+    }
 
     return (
         <Top>
             <h1>TrackIt</h1>
-            <img src={`${image}`} alt='foto do usuário' />
+            <article>
+                <img src={`${image}`} alt='foto do usuário' />
+                <button onClick={closeApp}>
+                    <div>
+                        <h4>S</h4><h4>A</h4><h4>I</h4><h4>R</h4>
+                    </div>
+                </button>
+            </article>
         </Top>
     )
 }
@@ -36,11 +51,31 @@ const Top = styled.div`
         font-size: 38.982px;
         color: #FFFFFF;
     }
+    
+    article {
+        display: flex;
+        align-items: center;
+    }
 
-    img {
-        margin-right: 20px;
+    article img {
+        margin-right: 10px;
         width: 51px;
         height: 51px;
         border-radius: 98.5px;
     }
-`
+
+    article button {
+        margin-right: 20px;
+        width:22px;
+        height: 65px;
+        border: none;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+        border-radius: 5px;
+        background-color: #1480c7;
+        font-family: 'Lexend Deca';
+        font-size: 12px;
+        line-height: 13px;
+        color:#FFFFFF;
+        cursor: pointer;
+    }
+`;
