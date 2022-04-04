@@ -1,14 +1,13 @@
-import React,{ useContext } from 'react';
-import TokenContext from '../Contexts/TokenContext';
+import React from 'react';
 import styled from 'styled-components';
 
 function Header() {
-    const { loginData } = useContext(TokenContext);
+    const image = localStorage.getItem("image");
 
     return (
         <Top>
             <h1>TrackIt</h1>
-            <img src={`${loginData.image}`} alt='foto do usuário' />
+            <img src={`${image}`} alt='foto do usuário' />
         </Top>
     )
 }

@@ -1,19 +1,23 @@
-import React,{ useContext, useState } from 'react';
+import React,{ useState, useEffect } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import axios from 'axios';
-import TokenContext from '../Contexts/TokenContext';
 import logo from '../assets/pictures/trackit.png';
 import styled from 'styled-components';
 import {ThreeDots} from 'react-loader-spinner';
 
 
 function LoginPage() {
-    const { setLoginData } = useContext(TokenContext);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(localStorage.getItem("token")){
+            navigate("/hoje");
+        }
+    })
 
     const [userLogin, setUserLogin] = useState({email:"", password:""});
     const [load, setLoad] = useState(false);
 
-    const navigate = useNavigate();
     
     function login(event) {
         event.preventDefault();
@@ -29,7 +33,8 @@ function LoginPage() {
         
         promise.then(response => {
             const {data} = response;
-            setLoginData({image: data.image, token:data.token});
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("image", data.image);
             navigate("/hoje");            
         });
 

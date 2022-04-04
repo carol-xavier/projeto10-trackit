@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
-import TokenContext from '../Contexts/TokenContext';
 import HabitsContext from '../Contexts/HabitsContext';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -12,7 +11,8 @@ import check from '../assets/pictures/check.png';
 
 
 function TodayPage() {
-    const { loginData } = useContext(TokenContext);
+    const token = localStorage.getItem("token");
+
     const { habitsPercentage, setHabitsPercentage } = useContext(HabitsContext);
 
     const [todayHabits, setTodayHabits] = useState([]);
@@ -29,7 +29,7 @@ function TodayPage() {
     useEffect(() => {
         const config = {
             headers: {
-                "Authorization": `Bearer ${loginData.token} `
+                "Authorization": `Bearer ${token} `
             }
         }
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today";
@@ -52,8 +52,6 @@ function TodayPage() {
             percentage = Math.round((doneHabits.length / todayHabits.length) * 100);
         }
         setHabitsPercentage(percentage);
-        //Recebendo o seguinte aviso: "Warning: Cannot update a component (`App`) 
-        // while rendering a different component (`TodayPage`)" Porém, está funcionando normalmente.
     }
 
     function checkHabit(id,done) {
@@ -61,7 +59,7 @@ function TodayPage() {
 
         const config = {
             headers: {
-                "Authorization": `Bearer ${loginData.token}`
+                "Authorization": `Bearer ${token}`
             }
         }
         

@@ -10,7 +10,7 @@ import trashcan from '../assets/pictures/trashcan-icon.png';
 import { ThemeProvider } from 'styled-components';
 
 function HabitsPage() {
-    const { loginData } = useContext(TokenContext);
+    const token = localStorage.getItem("token");
 
     const [habitTable, setHabitTable] = useState(false);
 
@@ -27,7 +27,7 @@ function HabitsPage() {
     useEffect(() => {
         const config = {
             headers: {
-                "Authorization": `Bearer ${loginData.token}`
+                "Authorization": `Bearer ${token}`
             }
         }
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
@@ -67,8 +67,8 @@ function HabitsPage() {
                 <button onClick={() => askDeleteHabit(id)}><img src={trashcan} alt='Botão para deletar' /></button>
                 <section>    
                     {weekDays.map((day, index) => {
-                        return <ThemeProvider theme={days.includes(day.number) ? invertedColor : color}>
-                            <Day key={index}>{day.letter}</Day>
+                        return <ThemeProvider theme={days.includes(day.number) ? invertedColor : color} key={index}>
+                            <Day>{day.letter}</Day>
                         </ThemeProvider>;
                     })}
                 </section>
@@ -88,7 +88,7 @@ function HabitsPage() {
             <BodyBox>
             {habitTable ? <Table 
                 habit={newHabit}
-                token={loginData.token}
+                token={token}
                 callback={setNewHabit}
                 callbackEffect={setCallUseEffect}
                 callbackTable={setHabitTable}
@@ -99,7 +99,7 @@ function HabitsPage() {
             {popUp && <PopUpDelete 
                 id={popUp} 
                 callbackEffect={setCallUseEffect} 
-                token={loginData.token}
+                token={token}
                 callbackPopUp = {setPopUp} />}
 
             {renderHabits.length > 0 ? showTotalHabits
