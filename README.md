@@ -1,4 +1,8 @@
-# Getting Started with Create React App
+# Using the deploy: [http://trackit-cx.vercel.app]
+      Option 1. Create your own account. The password must contain at least 10 digits
+      Option 2. Use the following credentials
+                      email: bob@gmail.com
+                      password: 0123456789
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
